@@ -1,0 +1,45 @@
+{
+  "name": "webv2",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "modernizr": "~3.6.0",
+    "font-awesome": "^4.7.0",
+    "jquery.meanmenu": "*",
+    "flexslider": "^2.7.0",
+    "owl.carousel": "^2.3.4",
+    "mediaelement": "^4.2.9",
+    "stroke-gap-icons-webfont": "Stroke-Gap-Icons-Webfont#^0.0.3",
+    "jquery": "1.11.3"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "less/bootstrap.less",
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js",
+        "dist/fonts/*"
+      ]
+    },
+    "font-awesome": {
+      "main": [
+        "less/font-awesome.less",
+        "css/font-awesome.css",
+        "fonts/*"
+      ]
+    },
+    "jquery.meanmenu": {
+      "main": [
+        "jquery.meanmenu.js",
+        "meanmenu.css"
+      ]
+    },
+    "flexslider": {
+      "main": [
+        "jquery.flexslider.js",
+        "flexslider.css",
+        "fonts/*"
+      ]
+    }
+  }
+}
