@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# This script is run once a termination happens on pid1.
+# Just acknowledge that that is happening.
+
+echo "s6 finishing"
