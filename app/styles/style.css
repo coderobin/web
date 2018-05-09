@@ -1636,6 +1636,10 @@ INNER PAGES
     background: url('../images/alone-anime.jpg') no-repeat;
 }
 
+#inner-banner.contact {
+    background: url('../images/cable-call-communication-33999-1950.jpg') no-repeat;
+}
+
 #inner-banner .banner-heading {
     padding: 150px 0px;
 }

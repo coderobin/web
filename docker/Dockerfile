@@ -61,7 +61,7 @@ RUN apk --update --no-cache \
         && rm -rf /var/lib/apt/lists/* \
         && rm /var/cache/apk/*
 
-# any run/finish file must chmod +x
+# any s6 run/finish file must chmod +x
 
 ADD ./s6 /etc/s6
 
@@ -74,6 +74,10 @@ RUN echo "root:Docker!" | chpasswd
 # copy web site
 
 COPY --from=0 /home/robin/web/dist /usr/share/nginx/html
+
+COPY default.conf /etc/nginx/conf.d/
+
+# misc
 
 EXPOSE 80 2222
 
