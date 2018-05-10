@@ -828,6 +828,13 @@ pageloader styles
     font-weight: 300;
 }
 
+/* Dong Xie 10-05-2018
+Force height for main-content */
+
+.height-285 {
+    height: 285px;
+}
+
 /*===================================
 BUTTONS
 ===================================*/

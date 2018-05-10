@@ -51,6 +51,7 @@ gulp.task('html', gulp.series(gulp.parallel('styles', 'scripts'), () => {
     .pipe($.useref({ searchPath: ['.tmp', 'app', '.'] }))
     .pipe($.if(/\.js$/, $.uglify({ compress: { drop_console: true } })))
     .pipe($.if(/vendor\.css$/, $.replace('fonts\/flexslider', '../fonts/flexslider')))
+    .pipe($.if(/vendor\.css$/, $.replace('fonts\/Stroke-Gap-Icons', '../fonts/Stroke-Gap-Icons')))
     .pipe($.if(/\.css$/, $.cssnano({ safe: true, autoprefixer: false })))
     .pipe($.if(/\.html$/, $.htmlmin({
       collapseWhitespace: true,
