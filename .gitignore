@@ -5,3 +5,9 @@ bower_components
 test/bower_components
 
 package-lock.json
+
+# gulp-real-favicon data file
+faviconData.json
+
+app/favicon/
+

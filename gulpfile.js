@@ -1,14 +1,34 @@
+'use strict';
+
 // generated on 2018-04-19 using generator-webapp 3.0.1
+// heavily modified since
+
 const gulp = require('gulp');
+const hubRegistry = require('gulp-hub');
 const gulpLoadPlugins = require('gulp-load-plugins');
 const browserSync = require('browser-sync').create();
 const del = require('del');
 const wiredep = require('wiredep').stream;
+const fs = require('fs');
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 
+const hub = new hubRegistry(['gulptasks/*.js']);
+gulp.registry(hub);
+
+// File where the favicon markups are stored
+const FAVICON_DATA_FILE = 'faviconData.json';
+
 let dev = true;
+let snippet = '';
+
+gulp.task('set-prod', function (done) {
+  dev = false;
+  snippet = JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code;
+
+  done();
+})
 
 gulp.task('styles', () => {
   return gulp.src('app/styles/*.css')
@@ -49,10 +69,12 @@ gulp.task('lint:test', () => {
 gulp.task('html', gulp.series(gulp.parallel('styles', 'scripts'), () => {
   return gulp.src('app/*.html')
     .pipe($.useref({ searchPath: ['.tmp', 'app', '.'] }))
+    .pipe($.cached('userefCache'))
     .pipe($.if(/\.js$/, $.uglify({ compress: { drop_console: true } })))
     .pipe($.if(/vendor\.css$/, $.replace('fonts\/flexslider', '../fonts/flexslider')))
     .pipe($.if(/vendor\.css$/, $.replace('fonts\/Stroke-Gap-Icons', '../fonts/Stroke-Gap-Icons')))
     .pipe($.if(/\.css$/, $.cssnano({ safe: true, autoprefixer: false })))
+    .pipe($.if(!dev && /\.html$/, $.realFavicon.injectFaviconMarkups(snippet)))
     .pipe($.if(/\.html$/, $.htmlmin({
       collapseWhitespace: true,
       minifyCSS: true,
@@ -80,14 +102,15 @@ gulp.task('fonts', () => {
 
 gulp.task('extras', () => {
   return gulp.src([
-    'app/*',
-    '!app/*.html'
+    'app/favicon/*'
   ], {
       dot: true
-    }).pipe(gulp.dest('dist'));
+    })
+    .pipe(gulp.dest('dist/favicon'));
 });
 
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
+gulp.task('clean', gulp.parallel(del.bind(null, ['.tmp', 'dist']),
+  (done) => { $.cache.clearAll(); done(); }));
 
 // inject bower components
 gulp.task('wiredep', (done) => {
@@ -124,17 +147,6 @@ gulp.task('serve',
     gulp.watch('bower.json', gulp.parallel('wiredep', 'fonts'));
   }));
 
-
-gulp.task('serve:dist', gulp.series(defaultTask, () => {
-  browserSync.init({
-    notify: false,
-    port: 9000,
-    server: {
-      baseDir: ['dist']
-    }
-  });
-}));
-
 gulp.task('serve:test', gulp.series('scripts', () => {
   browserSync.init({
     notify: false,
@@ -158,13 +170,15 @@ gulp.task('build', gulp.series(gulp.parallel('lint', 'html', 'images', 'fonts', 
   return gulp.src('dist/**/*').pipe($.size({ title: 'build', gzip: true }));
 }));
 
-function defaultTask() {
-  return new Promise((resolve) => {
-    dev = false;
-    var f = gulp.series(gulp.parallel('clean', 'wiredep'), 'build')
-    f();
-    resolve();
-  });
-}
+gulp.task('serve:dist', gulp.series('set-prod',
+  gulp.parallel('clean', 'wiredep'), 'build', () => {
+    browserSync.init({
+      notify: false,
+      port: 9000,
+      server: {
+        baseDir: ['dist']
+      }
+    });
+  }));
 
-gulp.task('default', defaultTask);
+gulp.task('default', gulp.series('set-prod', gulp.parallel('clean', 'wiredep'), 'build'));

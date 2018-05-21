@@ -48,6 +48,8 @@ RUN npm install
 
 RUN bower install
 
+RUN gulp generate-favicon
+
 RUN gulp
 
 # STAGE 1: build final
