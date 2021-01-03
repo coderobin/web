@@ -1,6 +1,6 @@
 # STAGE 0: build static web
 
-FROM node:9.11.1-alpine
+FROM node:10.23.0-alpine3.9
 
 LABEL maintainer Dong Xie <dong@coderobin.co.uk>
 
@@ -28,7 +28,7 @@ RUN apk --update --no-cache \
         libjpeg-turbo \
         libjpeg-turbo-dev \
         && rm -rf /var/lib/apt/lists/* \
-        && rm /var/cache/apk/*
+        && rm -f /var/cache/apk/*
 
 # install bower, gulp
 
