@@ -69,7 +69,7 @@ ADD /docker/s6 /etc/s6
 
 # setup sshd as required by Azure App Service
 
-COPY sshd_config /etc/ssh/
+COPY /docker/sshd_config /etc/ssh/
 
 RUN echo "root:Docker!" | chpasswd
 
@@ -77,7 +77,7 @@ RUN echo "root:Docker!" | chpasswd
 
 COPY --from=0 /home/robin/web/dist /usr/share/nginx/html
 
-COPY default.conf /etc/nginx/conf.d/
+COPY /docker/default.conf /etc/nginx/conf.d/
 
 # misc
 
