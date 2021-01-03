@@ -65,7 +65,7 @@ RUN apk --update --no-cache \
 
 # any s6 run/finish file must chmod +x
 
-ADD ./s6 /etc/s6
+ADD /docker/s6 /etc/s6
 
 # setup sshd as required by Azure App Service
 
