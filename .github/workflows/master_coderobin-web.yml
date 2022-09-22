@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ghcr.io/${{ secrets.AzureAppService_ContainerUsername_816ced2ec1c4428297d4356a6d1f5aad }}/web:${{ github.sha }}
+        tags: ghcr.io/coderobin/web:${{ github.sha }}
         file: ./docker/Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'coderobin-web'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1a21102dcb4e4c3aaad02e2ad5d88e55 }}
-        images: 'ghcr.io/${{ secrets.AzureAppService_ContainerUsername_816ced2ec1c4428297d4356a6d1f5aad }}/web:${{ github.sha }}'
+        images: 'ghcr.io/coderobin/web:${{ github.sha }}'
