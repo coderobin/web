@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ghcr.io/${{ secrets.AzureAppService_ContainerUsername_816ced2ec1c4428297d4356a6d1f5aad }}/coderobin.azurecr.io/web:${{ github.sha }}
+        tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
         file: ./docker/Dockerfile
 
   deploy:
